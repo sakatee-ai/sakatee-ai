@@ -86,23 +86,24 @@ function App() {
   return (
     <div style={{
       display: 'flex', justifyContent: 'center', alignItems: 'center',
-      minHeight: '100vh', backgroundColor: '#1e1e1e', fontFamily: 'sans-serif'
+      height: '100vh', backgroundColor: '#1e1e1e', fontFamily: 'sans-serif',
+      padding: 0, margin: 0,
     }}>
       <div style={{
-        width: '100%', maxWidth: '500px', backgroundColor: 'white', padding: '1rem',
-        boxShadow: '0 0 10px rgba(0,0,0,0.1)', borderRadius: '1rem', display: 'flex', flexDirection: 'column', minHeight: '80vh'
+        width: '100%', maxWidth: '600px', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', height: '100vh',
+        position: 'relative',
       }}>
-        <h2 style={{ textAlign: 'center' }}>sakatee-ai とおしゃべり 🤖</h2>
-
         <div style={{
-          flexGrow: 1,
-          overflowY: 'auto',
-          marginBottom: '1rem',
-          height: 'calc(100vh - 300px)'
+          flexGrow: 1, overflowY: 'auto', padding: '1rem',
+          paddingBottom: '5rem', // 入力欄に被らないようにする
         }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>sakatee-ai とおしゃべり 🤖</h2>
+  
           {messages.map((msg, idx) => (
             <div key={idx} style={{
-              display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              display: 'flex',
+              justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
               alignItems: 'center', margin: '0.5rem 0'
             }}>
               {msg.role === 'assistant' && (
@@ -111,24 +112,46 @@ function App() {
               <div style={{
                 background: msg.role === 'user' ? '#d1e7dd' : '#333',
                 color: msg.role === 'user' ? 'black' : 'white',
-                padding: '0.5rem 1rem', borderRadius: '1rem', maxWidth: '80%'
+                padding: '0.5rem 1rem', borderRadius: '1rem', maxWidth: '80%',
+                wordBreak: 'break-word'
               }}>{msg.text}</div>
             </div>
           ))}
           <div ref={messagesEndRef} />
         </div>
-
-        <div style={{ display: 'flex' }}>
+  
+        {/* 入力欄：スマホ画面下部固定 */}
+        <div style={{
+          position: 'fixed',
+          bottom: 0,
+          width: '100%',
+          maxWidth: '600px',
+          background: 'white',
+          borderTop: '1px solid #ddd',
+          padding: '0.5rem',
+          display: 'flex',
+        }}>
           <input
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSend()}
             placeholder="メッセージを入力..."
-            style={{ flex: 1, padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
+            style={{
+              flex: 1,
+              padding: '0.75rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #ccc',
+              fontSize: '1rem'
+            }}
           />
           <button onClick={handleSend} style={{
-            padding: '0.5rem 1rem', marginLeft: '0.5rem', borderRadius: '0.5rem',
-            border: 'none', backgroundColor: '#0d6efd', color: 'white', cursor: 'pointer'
+            padding: '0.75rem 1rem',
+            marginLeft: '0.5rem',
+            borderRadius: '0.5rem',
+            border: 'none',
+            backgroundColor: '#0d6efd',
+            color: 'white',
+            fontSize: '1rem'
           }}>送信</button>
         </div>
       </div>
